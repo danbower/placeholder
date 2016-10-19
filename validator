@@ -1,0 +1,8 @@
+#! /bin/bash
+
+find . -path ./vendor -prune -o -name \*.php -print0 | xargs -0 -n1 -P8 php -l 1> /dev/null &&
+./vendor/bin/phpunit;
+
+./vendor/bin/phpmd . text cleancode,codesize,controversial,design,naming,unusedcode --exclude vendor/,tests/;
+./vendor/bin/phpmd ./tests text unusedcode;
+./vendor/bin/phpcs . --standard=PSR2 --ignore=./vendor;
