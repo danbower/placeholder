@@ -1,5 +1,6 @@
 <?php namespace Tests\Image\Config\Build;
 
+use App\Image\Colour;
 use PHPUnit_Framework_TestCase;
 use App\Image\Config\Build\StandardBuilder;
 use Symfony\Component\HttpFoundation\Request;
@@ -110,7 +111,7 @@ class StandardBuilderTest extends PHPUnit_Framework_TestCase
 
     /**
      * Tests that the background colour defined within
-     * the querystring sets the relevant property.
+     * the querystring correctly creates a Colour.
      */
     public function testBackgroundColourTransform()
     {
@@ -125,13 +126,13 @@ class StandardBuilderTest extends PHPUnit_Framework_TestCase
         $request->query->expects($this->once())
                        ->method('get')
                        ->with('bg')
-                       ->will($this->returnValue('999'));
+                       ->will($this->returnValue('#999999'));
 
         $builder = new StandardBuilder(200, 200, $request);
         $builder->setBackgroundColour();
         $config = $builder->getResult();
 
-        $this->assertEquals('999', $config->getBackgroundColour());
+        $this->assertEquals('#999999', $config->getBackgroundColour()->getHex());
     }
 
     /**
@@ -151,12 +152,12 @@ class StandardBuilderTest extends PHPUnit_Framework_TestCase
         $builder->setBackgroundColour();
         $config = $builder->getResult();
 
-        $this->assertNotNull($config->getBackgroundColour());
+        $this->assertInstanceOf(Colour::class, $config->getBackgroundColour());
     }
 
     /**
      * Tests that the foreground colour defined within
-     * the querystring sets the relevant property.
+     * the querystring correcly creates a Colour.
      */
     public function testForegroundColourTransform()
     {
@@ -171,13 +172,13 @@ class StandardBuilderTest extends PHPUnit_Framework_TestCase
         $request->query->expects($this->once())
                        ->method('get')
                        ->with('fg')
-                       ->will($this->returnValue('777'));
+                       ->will($this->returnValue('#777777'));
 
         $builder = new StandardBuilder(200, 200, $request);
         $builder->setForegroundColour();
         $config = $builder->getResult();
 
-        $this->assertEquals('777', $config->getForegroundColour());
+        $this->assertEquals('#777777', $config->getForegroundColour()->getHex());
     }
 
     /**
@@ -197,6 +198,6 @@ class StandardBuilderTest extends PHPUnit_Framework_TestCase
         $builder->setForegroundColour();
         $config = $builder->getResult();
 
-        $this->assertNotNull($config->getForegroundColour());
+        $this->assertInstanceOf(Colour::class, $config->getForegroundColour());
     }
 }

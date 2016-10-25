@@ -107,12 +107,12 @@ class Validator
     {
         $errors = [];
 
-        if (!$this->isValidHexColour($backgroundColour)) {
-            $errors['backgroundColour'] = 'Background must be a hexadecimal colour';
+        if (is_null($backgroundColour)) {
+            $errors['backgroundColour'] = 'Background colour must be valid.';
         }
 
-        if (!$this->isValidHexColour($foregroundColour)) {
-            $errors['foregroundColour'] = 'Foreground must be a hexadecimal colour';
+        if (is_null($foregroundColour)) {
+            $errors['foregroundColour'] = 'Foreground colour must be valid.';
         }
 
         return $errors;
@@ -159,20 +159,5 @@ class Validator
         }
 
         return $errors;
-    }
-
-    /**
-     * Determine whether $hex is a hexadecimal colour.
-     *
-     * @param string $hex
-     *
-     * @return boolean whether or not it is a hexadecimal colour
-     */
-    protected function isValidHexColour($hex)
-    {
-        $hex = preg_replace('/^#/', '', $hex);
-        $hexLength = strlen($hex);
-
-        return ($hexLength === 3 || $hexLength === 6) && ctype_xdigit($hex);
     }
 }

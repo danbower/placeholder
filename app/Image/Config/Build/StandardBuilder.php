@@ -1,6 +1,8 @@
 <?php namespace App\Image\Config\Build;
 
+use App\Image\Colour;
 use App\Image\Config\Config;
+use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -92,28 +94,38 @@ class StandardBuilder implements Builder
     }
 
     /**
-     * Set the background colour based on a querystring key or a default.
+     * Set the background colour based on a default or attempt to update
+     * based on the querystring value.
      */
     public function setBackgroundColour()
     {
-        $background = '#000000';
+        $background = new Colour('#000000');
 
         if ($this->request->query->has('bg')) {
-            $background = $this->request->query->get('bg');
+            try {
+                $background = new Colour($this->request->query->get('bg'));
+            } catch (InvalidArgumentException $e) {
+                return;
+            }
         }
 
         $this->config->setBackgroundColour($background);
     }
 
     /**
-     * Set the foreground colour based on a querystring key or a default.
+     * Set the foreground colour based on a default or attempt to update
+     * based on the querystring value.
      */
     public function setForegroundColour()
     {
-        $foreground = '#ffffff';
+        $foreground = new Colour('#ffffff');
 
         if ($this->request->query->has('fg')) {
-            $foreground = $this->request->query->get('fg');
+            try {
+                $foreground = new Colour($this->request->query->get('fg'));
+            } catch (InvalidArgumentException $e) {
+                return;
+            }
         }
 
         $this->config->setForegroundColour($foreground);

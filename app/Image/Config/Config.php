@@ -1,5 +1,7 @@
 <?php namespace App\Image\Config;
 
+use App\Image\Colour;
+
 /**
  * A configuration of an image containing some text.
  */
@@ -26,12 +28,12 @@ class Config
     protected $text;
 
     /**
-     * @var string
+     * @var Colour
      */
     protected $backgroundColour;
 
     /**
-     * @var string
+     * @var Colour
      */
     protected $foregroundColour;
 
@@ -100,7 +102,7 @@ class Config
     }
 
     /**
-     * @return string
+     * @return Colour
      */
     public function getBackgroundColour()
     {
@@ -108,15 +110,15 @@ class Config
     }
 
     /**
-     * @param string $backgroundColour
+     * @param Colour $backgroundColour
      */
-    public function setBackgroundColour($backgroundColour)
+    public function setBackgroundColour(Colour $backgroundColour)
     {
         $this->backgroundColour = $backgroundColour;
     }
 
     /**
-     * @return string
+     * @return Colour
      */
     public function getForegroundColour()
     {
@@ -124,9 +126,9 @@ class Config
     }
 
     /**
-     * @param string $foregroundColour
+     * @param Colour $foregroundColour
      */
-    public function setForegroundColour($foregroundColour)
+    public function setForegroundColour(Colour $foregroundColour)
     {
         $this->foregroundColour = $foregroundColour;
     }
