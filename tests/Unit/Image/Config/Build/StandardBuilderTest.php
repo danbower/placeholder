@@ -63,7 +63,7 @@ class StandardBuilderTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests that the "text" property has a sensible value recalculated.
+     * Tests that the builder sets a default.
      */
     public function testTextDefault()
     {
@@ -83,7 +83,7 @@ class StandardBuilderTest extends PHPUnit_Framework_TestCase
 
         $config = $builder->getResult();
 
-        $this->assertEquals('123x321', $config->getText());
+        $this->assertNotNull($config->getText());
     }
 
     /**
@@ -135,6 +135,26 @@ class StandardBuilderTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests that the builder sets a default
+     */
+    public function testBackgroundDefault()
+    {
+        $request = $this->createMock(Request::class);
+
+        $request->query = $this->createMock(ParameterBag::class);
+        $request->query->expects($this->once())
+                       ->method('has')
+                       ->with('bg')
+                       ->will($this->returnValue(false));
+
+        $builder = new StandardBuilder(200, 200, $request);
+        $builder->setBackgroundColour();
+        $config = $builder->getResult();
+
+        $this->assertNotNull($config->getBackgroundColour());
+    }
+
+    /**
      * Tests that the foreground colour defined within
      * the querystring sets the relevant property.
      */
@@ -158,5 +178,25 @@ class StandardBuilderTest extends PHPUnit_Framework_TestCase
         $config = $builder->getResult();
 
         $this->assertEquals('777', $config->getForegroundColour());
+    }
+
+    /**
+     * Tests that the builder sets a default
+     */
+    public function testForegroundDefault()
+    {
+        $request = $this->createMock(Request::class);
+
+        $request->query = $this->createMock(ParameterBag::class);
+        $request->query->expects($this->once())
+                       ->method('has')
+                       ->with('fg')
+                       ->will($this->returnValue(false));
+
+        $builder = new StandardBuilder(200, 200, $request);
+        $builder->setForegroundColour();
+        $config = $builder->getResult();
+
+        $this->assertNotNull($config->getForegroundColour());
     }
 }

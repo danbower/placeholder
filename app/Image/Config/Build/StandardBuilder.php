@@ -78,7 +78,7 @@ class StandardBuilder implements Builder
     }
 
     /**
-     * Set the text based on a querystring key.
+     * Set the text based on a querystring key or a default.
      */
     public function setText()
     {
@@ -92,26 +92,30 @@ class StandardBuilder implements Builder
     }
 
     /**
-     * Set the background colour based on a querystring key.
+     * Set the background colour based on a querystring key or a default.
      */
     public function setBackgroundColour()
     {
+        $background = '#000000';
+
         if ($this->request->query->has('bg')) {
-            $this->config->setBackgroundColour(
-                $this->request->query->get('bg')
-            );
+            $background = $this->request->query->get('bg');
         }
+
+        $this->config->setBackgroundColour($background);
     }
 
     /**
-     * Set the foreground colour based on a querystring key.
+     * Set the foreground colour based on a querystring key or a default.
      */
     public function setForegroundColour()
     {
+        $foreground = '#ffffff';
+
         if ($this->request->query->has('fg')) {
-            $this->config->setForegroundColour(
-                $this->request->query->get('fg')
-            );
+            $foreground = $this->request->query->get('fg');
         }
+
+        $this->config->setForegroundColour($foreground);
     }
 }

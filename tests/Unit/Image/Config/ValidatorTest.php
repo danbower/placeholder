@@ -28,6 +28,27 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests that empty dimensions produce validation errors.
+     */
+    public function testEmptyDimensions()
+    {
+        $validator = new Validator();
+        $configuration = $this->createMock(Config::class);
+        $configuration->expects($this->once())
+                      ->method('getWidth')
+                      ->will($this->returnValue(null));
+
+        $configuration->expects($this->once())
+                      ->method('getHeight')
+                      ->will($this->returnValue(null));
+
+        $errors = $validator->validate($configuration);
+
+        $this->assertArrayHasKey('width', $errors);
+        $this->assertArrayHasKey('height', $errors);
+    }
+
+    /**
      * Tests that small widths and heights produce validation errors.
      */
     public function testTooSmallDimensions()
@@ -89,6 +110,27 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
 
         $this->assertArrayNotHasKey('backgroundColour', $errors);
         $this->assertArrayNotHasKey('foregroundColour', $errors);
+    }
+
+    /**
+     *  Tests that empty colours produce validation errors.
+     */
+    public function testEmptyColours()
+    {
+        $validator = new Validator();
+        $configuration = $this->createMock(Config::class);
+        $configuration->expects($this->once())
+                      ->method('getBackgroundColour')
+                      ->will($this->returnValue(null));
+
+        $configuration->expects($this->once())
+                      ->method('getForegroundColour')
+                      ->will($this->returnValue(null));
+
+        $errors = $validator->validate($configuration);
+
+        $this->assertArrayHasKey('backgroundColour', $errors);
+        $this->assertArrayHasKey('foregroundColour', $errors);
     }
 
     /**

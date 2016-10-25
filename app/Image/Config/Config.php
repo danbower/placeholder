@@ -6,41 +6,34 @@
 class Config
 {
     /**
-     * Initialised within the constructor
-     *
+     * @var int
+     */
+    protected $width;
+
+    /**
+     * @var int
+     */
+    protected $height;
+
+    /**
+     * @var string
+     */
+    protected $format;
+
+    /**
      * @var string
      */
     protected $text;
 
     /**
-     * @var int
+     * @var string
      */
-    protected $width = 200;
-
-    /**
-     * @var int
-     */
-    protected $height = 200;
+    protected $backgroundColour;
 
     /**
      * @var string
      */
-    protected $format = 'png';
-
-    /**
-     * @var string
-     */
-    protected $backgroundColour = '000';
-
-    /**
-     * @var string
-     */
-    protected $foregroundColour = 'fff';
-
-    public function __construct()
-    {
-        $this->text = sprintf('%dx%d', $this->width, $this->height);
-    }
+    protected $foregroundColour;
 
     /**
      * @return int
