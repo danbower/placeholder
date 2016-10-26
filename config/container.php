@@ -3,6 +3,9 @@
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+use App\Image\Drawer;
+use App\Image\Driver\GdDriver;
+use App\Image\Config\Validator;
 use App\Controller\ControllerResolver;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\Routing\RequestContext;
@@ -14,6 +17,11 @@ use Symfony\Component\HttpKernel\EventListener\RouterListener;
 use Symfony\Component\HttpKernel\EventListener\ExceptionListener;
 
 $container = new ContainerBuilder();
+
+$container->register('image.config.validator', Validator::class);
+$container->register('image.driver', GdDriver::class);
+$container->register('image.drawer', Drawer::class)
+          ->setArguments([new Reference('image.driver')]);
 
 $container->register('context', RequestContext::class);
 
