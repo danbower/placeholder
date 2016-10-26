@@ -3,6 +3,7 @@
 use App\Image\Image;
 use App\Image\Drawer;
 use App\Image\Colour;
+use App\Image\TrueTypeFont;
 use App\Image\Config\Config;
 use App\Image\Driver\Driver;
 use InvalidArgumentException;
@@ -24,6 +25,12 @@ class DrawerTest extends PHPUnit_Framework_TestCase
 
         $config->expects($this->once())
                ->method('getText');
+
+        $config->expects($this->once())
+               ->method('getFont')
+               ->will($this->returnValue(
+                   $this->createMock(TrueTypeFont::class)
+               ));
 
         $config->expects($this->once())
                ->method('getBackgroundColour')
@@ -104,23 +111,8 @@ class DrawerTest extends PHPUnit_Framework_TestCase
      */
     public function testInvalidFormat()
     {
-        $config = $this->createMock(Config::class);
-        $config->expects($this->once())
-               ->method('getFormat')
-               ->will($this->returnValue('foo'));
 
-        $config->expects($this->once())
-               ->method('getBackgroundColour')
-               ->will($this->returnValue(
-                   $this->createMock(Colour::class)
-               ));
-
-        $config->expects($this->once())
-               ->method('getForegroundColour')
-               ->will($this->returnValue(
-                   $this->createMock(Colour::class)
-               ));
-
+        $config = $this->createConfigMock();
         $driver = $this->createMock(Driver::class);
         $driver->expects($this->once())
                ->method('canvas')

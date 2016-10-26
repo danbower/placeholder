@@ -2,6 +2,7 @@
 
 use App\Image\Image;
 use App\Image\Colour;
+use App\Image\TrueTypeFont;
 
 /**
  * Driver for the GD library.
@@ -24,8 +25,12 @@ class GdDriver implements Driver
     /**
      * {@inheritDoc}
      */
-    public function writeText(Image $image, $text, Colour $colour)
+    public function writeText(Image $image, $text, Colour $colour, TrueTypeFont $font)
     {
+        if (strlen($text) === 0) {
+            return;
+        }
+
         $foreground = $colour->getRgb();
         $colourIdentifier = imagecolorallocate(
             $image->getCore(),
@@ -34,18 +39,23 @@ class GdDriver implements Driver
             $foreground[2]
         );
 
-        $font = 4;
-        $fontWidth = imagefontwidth($font);
-        $fontHeight = imagefontheight($font);
-        $textWidth = strlen($text) * $fontWidth;
+        $imageWidth = imagesx($image->getCore());
+        $imageHeight = imagesy($image->getCore());
+        $fontSize = min($imageWidth / strlen($text), $imageHeight / 2);
 
-        imagestring(
+        $textBox = imagettfbbox($fontSize, 0, $font->getPath(), $text);
+        $textWidth = ceil($textBox[4] - $textBox[1]);
+        $textHeight = ceil(abs($textBox[7]) + abs($textBox[1]));
+
+        imagettftext(
             $image->getCore(),
-            $font,
-            (imagesx($image->getCore()) - $textWidth) / 2,
-            (imagesy($image->getCore()) - $fontHeight) / 2,
-            $text,
-            $colourIdentifier
+            $fontSize,
+            0,
+            ceil(($imageWidth - $textWidth) / 2),
+            ceil(($imageHeight - $textHeight) / 2 + $textHeight),
+            $colourIdentifier,
+            $font->getPath(),
+            $text
         );
     }
 

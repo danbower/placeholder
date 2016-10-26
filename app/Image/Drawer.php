@@ -38,7 +38,8 @@ class Drawer
         $this->driver->writeText(
             $image,
             $config->getText(),
-            $config->getForegroundColour()
+            $config->getForegroundColour(),
+            $config->getFont()
         );
 
         switch ($config->getFormat()) {

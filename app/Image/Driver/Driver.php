@@ -2,6 +2,7 @@
 
 use App\Image\Image;
 use App\Image\Colour;
+use App\Image\TrueTypeFont;
 use InvalidArgumentException;
 
 /**
@@ -26,8 +27,9 @@ interface Driver
      * @param Image $image
      * @param string $text
      * @param Colour $colour
+     * @param TrueTypeFont $font
      */
-    public function writeText(Image $image, $text, Colour $colour);
+    public function writeText(Image $image, $text, Colour $colour, TrueTypeFont $font);
 
     /**
      * Generate binary data in PNG format from the underlying image
