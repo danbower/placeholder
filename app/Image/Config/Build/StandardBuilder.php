@@ -1,6 +1,7 @@
 <?php namespace App\Image\Config\Build;
 
 use App\Image\Colour;
+use App\Image\TrueTypeFont;
 use App\Image\Config\Config;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
@@ -91,6 +92,14 @@ class StandardBuilder implements Builder
         }
 
         $this->config->setText($text);
+    }
+
+    /**
+     * Set the font based on a default.
+     */
+    public function setFont()
+    {
+        $this->config->setFont(new TrueTypeFont('Roboto-Regular'));
     }
 
     /**

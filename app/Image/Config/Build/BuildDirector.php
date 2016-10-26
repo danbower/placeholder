@@ -21,6 +21,7 @@ class BuildDirector
         $this->builder->setHeight();
         $this->builder->setFormat();
         $this->builder->setText();
+        $this->builder->setFont();
         $this->builder->setBackgroundColour();
         $this->builder->setForegroundColour();
     }

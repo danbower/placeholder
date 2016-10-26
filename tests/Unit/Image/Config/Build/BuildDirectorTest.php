@@ -31,6 +31,9 @@ class BuildDirectorTest extends PHPUnit_Framework_TestCase
                 ->method('setText');
 
         $builder->expects($this->once())
+                ->method('setFont');
+
+        $builder->expects($this->once())
                 ->method('setBackgroundColour');
 
         $builder->expects($this->once())

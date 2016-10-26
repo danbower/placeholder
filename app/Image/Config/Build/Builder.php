@@ -11,6 +11,8 @@ interface Builder
 
     public function setText();
 
+    public function setFont();
+
     public function setFormat();
 
     public function setBackgroundColour();

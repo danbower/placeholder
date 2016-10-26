@@ -48,6 +48,9 @@ class Validator
             ),
             $this->validateFormat(
                 $config->getFormat()
+            ),
+            $this->validateFont(
+                $config->getFont()
             )
         );
     }
@@ -156,6 +159,24 @@ class Validator
                 'Valid formats are %s',
                 implode(', ', self::VALID_FORMATS)
             );
+        }
+
+        return $errors;
+    }
+
+    /**
+     * Validate font of the configuration.
+     *
+     * @param string $font
+     *
+     * @return array any validation errors
+     */
+    protected function validateFont($font)
+    {
+        $errors = [];
+
+        if (is_null($font)) {
+            $errors['font'] = 'Font must be valid';
         }
 
         return $errors;

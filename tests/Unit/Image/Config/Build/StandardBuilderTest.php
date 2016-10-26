@@ -1,6 +1,7 @@
 <?php namespace Tests\Image\Config\Build;
 
 use App\Image\Colour;
+use App\Image\TrueTypeFont;
 use PHPUnit_Framework_TestCase;
 use App\Image\Config\Build\StandardBuilder;
 use Symfony\Component\HttpFoundation\Request;
@@ -199,5 +200,21 @@ class StandardBuilderTest extends PHPUnit_Framework_TestCase
         $config = $builder->getResult();
 
         $this->assertInstanceOf(Colour::class, $config->getForegroundColour());
+    }
+
+    /**
+     * Tests that the builder sets a default.
+     */
+    public function testFontDefault()
+    {
+        $request = $this->createMock(Request::class);
+
+        $request->query = $this->createMock(ParameterBag::class);
+
+        $builder = new StandardBuilder(200, 200, $request);
+        $builder->setFont();
+        $config = $builder->getResult();
+
+        $this->assertInstanceOf(TrueTypeFont::class, $config->getFont());
     }
 }

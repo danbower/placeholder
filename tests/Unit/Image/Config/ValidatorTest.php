@@ -2,6 +2,7 @@
 
 use App\Image\Colour;
 use App\Image\Config\Config;
+use App\Image\TrueTypeFont;
 use App\Image\Config\Validator;
 use PHPUnit_Framework_TestCase;
 
@@ -200,5 +201,39 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
         $errors = $validator->validate($configuration);
 
         $this->assertArrayHasKey('text', $errors);
+    }
+
+    /**
+     * Tests that a valid font reference doesn't produce a validation error.
+     */
+    public function testValidFont()
+    {
+        $validator = new Validator();
+        $configuration = $this->createMock(Config::class);
+        $configuration->expects($this->once())
+                      ->method('getFont')
+                      ->will($this->returnValue(
+                          $this->createMock(TrueTypeFont::class)
+                      ));
+
+        $errors = $validator->validate($configuration);
+
+        $this->assertArrayNotHasKey('font', $errors);
+    }
+
+    /**
+     * Tests that an invalid font reference produces a validation error.
+     */
+    public function testEmptyFont()
+    {
+        $validator = new Validator();
+        $configuration = $this->createMock(Config::class);
+        $configuration->expects($this->once())
+                      ->method('getFont')
+                      ->will($this->returnValue(null));
+
+        $errors = $validator->validate($configuration);
+
+        $this->assertArrayHasKey('font', $errors);
     }
 }

@@ -1,6 +1,7 @@
 <?php namespace App\Image\Config;
 
 use App\Image\Colour;
+use App\Image\TrueTypeFont;
 
 /**
  * A configuration of an image containing some text.
@@ -26,6 +27,11 @@ class Config
      * @var string
      */
     protected $text;
+
+    /**
+     * @var TrueTypeFont
+     */
+    protected $font;
 
     /**
      * @var Colour
@@ -99,6 +105,22 @@ class Config
     public function setText($text)
     {
         $this->text = $text;
+    }
+
+    /**
+     * @return TrueTypeFont
+     */
+    public function getFont()
+    {
+        return $this->font;
+    }
+
+    /**
+     * @param TrueTypeFont
+     */
+    public function setFont(TrueTypeFont $font)
+    {
+        $this->font = $font;
     }
 
     /**
