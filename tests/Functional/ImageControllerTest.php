@@ -1,18 +1,32 @@
-<?php namespace Tests\Functional\Image;
+<?php namespace Tests\Functional;
 
 use Tests\WebTestCase;
 use GuzzleHttp\Exception\ClientException;
 
-class SquareControllerTest extends WebTestCase
+class ControllerTest extends WebTestCase
 {
     /**
      * Tests that standard access produces a valid response.
      */
-    public function testStandardRoute()
+    public function testSquareRoute()
     {
         $response = self::$client->request(
             'GET',
             sprintf('%s/100', self::$baseUrl)
+        );
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('image/png', $response->getHeader('Content-Type')[0]);
+    }
+
+    /**
+     * Tests that standard access produces a valid response.
+     */
+    public function testRectangularRoute()
+    {
+        $response = self::$client->request(
+            'GET',
+            sprintf('%s/100/100', self::$baseUrl)
         );
 
         $this->assertEquals(200, $response->getStatusCode());
