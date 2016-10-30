@@ -15,17 +15,26 @@ class Colour
     protected $rgb;
 
     /**
-     * @param string $colour hexadecimal colour
+     * @param mixed $colour hexadecimal colour or RGB array
      *
-     * @throws InvalidArgumentException passed a non-hex colour
+     * @throws InvalidArgumentException passed unsupported colour format
      */
     public function __construct($colour)
     {
-        if (!$this->isValidHex($colour)) {
-            throw new InvalidArgumentException('Only hexadecimal is supported');
-        }
+        switch (true) {
+            case is_string($colour) && $this->isValidHex($colour):
+                $this->initialiseFromHex($colour);
+                break;
 
-        $this->initialiseFromHex($colour);
+            case is_array($colour) && $this->isValidRgb($colour):
+                $this->initialiseFromRgb($colour);
+                break;
+
+            default:
+                throw new InvalidArgumentException(
+                    'Only hexadecimal string and RGB array are supported'
+                );
+        }
     }
 
     /**
@@ -70,6 +79,15 @@ class Colour
     }
 
     /**
+     * Initialise class properties based on a RGB colour.
+     */
+    protected function initialiseFromRgb(array $colour)
+    {
+        $this->hex = $this->rgbToHex($colour);
+        $this->rgb = $colour;
+    }
+
+    /**
      * Determine whether $hex is a hexadecimal colour.
      *
      * @param string $hex
@@ -96,5 +114,39 @@ class Colour
     protected function hexToRgb($hex)
     {
         return sscanf($hex, '#%02x%02x%02x');
+    }
+
+    /**
+     * Determine whether $rgb is a RGB colour.
+     *
+     * @param array $rgb
+     *
+     * @return boolean
+     */
+    protected function isValidRgb(array $rgb)
+    {
+        if (count($rgb) !== 3) {
+            return false;
+        }
+
+        for ($i = 0; $i < 3; $i++) {
+            if ($rgb[$i] < 0 || $rgb[$i] > 255) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Convert RGB array to hex string.
+     *
+     * @param array $rgb
+     *
+     * @return string
+     */
+    protected function rgbToHex(array $rgb)
+    {
+        return sprintf('#%02x%02x%02x', $rgb[0], $rgb[1], $rgb[2]);
     }
 }
