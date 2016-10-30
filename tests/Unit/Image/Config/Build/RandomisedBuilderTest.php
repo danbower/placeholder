@@ -1,40 +1,66 @@
-<?php namespace Tests\Image\Config\Build;
+<?php namespace Tests\Unit\Image\Config\Build;
 
 use App\Image\Colour;
-use App\Image\TrueTypeFont;
 use PHPUnit_Framework_TestCase;
-use App\Image\Config\Build\StandardBuilder;
+use App\Image\Config\Validator;
+use App\Image\Config\Build\RandomisedBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class StandardBuilderTest extends PHPUnit_Framework_TestCase
+class RandomBuilderTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * Tests that the width passed-in sets the relevant property.
+     * Test that the width constraint override is honoured.
      */
-    public function testWidthTransform()
+    public function testWidthConstraint()
     {
         $request = $this->createMock(Request::class);
+        $request->query = $this->createMock(ParameterBag::class);
+        $request->query->method('has')
+                       ->will($this->returnValue(true));
 
-        $builder = new StandardBuilder(101, 200, $request);
+        $request->query->method('get')
+                 ->will($this->onConsecutiveCalls(
+                     Validator::MAX_LENGTH - 1,
+                     Validator::MAX_LENGTH
+                 ));
+
+        $builder = new RandomisedBuilder($request);
+
         $builder->setWidth();
         $config = $builder->getResult();
 
-        $this->assertEquals(101, $config->getWidth());
+        $this->assertTrue(
+            $config->getWidth() === Validator::MAX_LENGTH ||
+            $config->getWidth() === Validator::MAX_LENGTH - 1
+        );
     }
 
     /**
-     * Tests that the height passed-in sets the relevant property.
+     * Test that the height constraint override is honoured.
      */
-    public function testHeightTransform()
+    public function testHeightConstraint()
     {
         $request = $this->createMock(Request::class);
+        $request->query = $this->createMock(ParameterBag::class);
+        $request->query->method('has')
+                       ->will($this->returnValue(true));
 
-        $builder = new StandardBuilder(200, 101, $request);
+        $request->query->method('get')
+                 ->will($this->onConsecutiveCalls(
+                     Validator::MAX_LENGTH - 1,
+                     Validator::MAX_LENGTH
+                 ));
+
+        $builder = new RandomisedBuilder($request);
+
         $builder->setHeight();
         $config = $builder->getResult();
 
-        $this->assertEquals(101, $config->getHeight());
+        $this->assertTrue(
+            $config->getHeight() === Validator::MAX_LENGTH ||
+            $config->getHeight() === Validator::MAX_LENGTH - 1
+        );
     }
 
     /**
@@ -56,7 +82,7 @@ class StandardBuilderTest extends PHPUnit_Framework_TestCase
                        ->with('bg')
                        ->will($this->returnValue('#999999'));
 
-        $builder = new StandardBuilder(200, 200, $request);
+        $builder = new RandomisedBuilder($request);
         $builder->setBackgroundColour();
         $config = $builder->getResult();
 
@@ -76,7 +102,7 @@ class StandardBuilderTest extends PHPUnit_Framework_TestCase
                        ->with('bg')
                        ->will($this->returnValue(false));
 
-        $builder = new StandardBuilder(200, 200, $request);
+        $builder = new RandomisedBuilder($request);
         $builder->setBackgroundColour();
         $config = $builder->getResult();
 
@@ -102,7 +128,7 @@ class StandardBuilderTest extends PHPUnit_Framework_TestCase
                        ->with('fg')
                        ->will($this->returnValue('#777777'));
 
-        $builder = new StandardBuilder(200, 200, $request);
+        $builder = new RandomisedBuilder($request);
         $builder->setForegroundColour();
         $config = $builder->getResult();
 
@@ -122,7 +148,7 @@ class StandardBuilderTest extends PHPUnit_Framework_TestCase
                        ->with('fg')
                        ->will($this->returnValue(false));
 
-        $builder = new StandardBuilder(200, 200, $request);
+        $builder = new RandomisedBuilder($request);
         $builder->setForegroundColour();
         $config = $builder->getResult();
 
