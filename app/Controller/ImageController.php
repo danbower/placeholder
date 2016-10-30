@@ -3,6 +3,7 @@
 use App\Image\Config\Config;
 use App\Image\Config\Build\BuildDirector;
 use App\Image\Config\Build\StandardBuilder;
+use App\Image\Config\Build\RandomisedBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -38,6 +39,20 @@ class ImageController extends Controller
     public function renderRectangle(Request $request, $width, $height)
     {
         $director = new BuildDirector(new StandardBuilder($width, $height, $request));
+
+        return $this->renderOrError($director->getResult());
+    }
+
+    /**
+     * Attempt to render a randomised image.
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function renderRandom(Request $request)
+    {
+        $director = new BuildDirector(new RandomisedBuilder($request));
 
         return $this->renderOrError($director->getResult());
     }

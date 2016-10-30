@@ -34,6 +34,20 @@ class ControllerTest extends WebTestCase
     }
 
     /**
+     * Tests that standard access produces a valid response.
+     */
+    public function testRandomisedRoute()
+    {
+        $response = self::$client->request(
+            'GET',
+            sprintf('%s/random', self::$baseUrl)
+        );
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('image/png', $response->getHeader('Content-Type')[0]);
+    }
+
+    /**
      * Tests that an override of the default with a supported
      * extension produces a valid response.
      */

@@ -35,4 +35,13 @@ $collection->add('rectangle_image', new Route(
     $rules
 ));
 
+$collection->add('random_image', new Route(
+    'random.{format}',
+    [
+        '_controller' => 'App\\Controller\\ImageController::renderRandom',
+        'format' => $defaultFormat,
+    ],
+    $rules
+));
+
 return $collection;
