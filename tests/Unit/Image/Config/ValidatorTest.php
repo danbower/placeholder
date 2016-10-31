@@ -172,38 +172,6 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests that valid text doesn't produce a validation error.
-     */
-    public function testValidText()
-    {
-        $validator = new Validator();
-        $configuration = $this->createMock(Config::class);
-        $configuration->expects($this->once())
-                      ->method('getText')
-                      ->will($this->returnValue('foo bar'));
-
-        $errors = $validator->validate($configuration);
-
-        $this->assertArrayNotHasKey('text', $errors);
-    }
-
-    /**
-     * Tests that long text produces a validation error.
-     */
-    public function testTooLongText()
-    {
-        $validator = new Validator();
-        $configuration = $this->createMock(Config::class);
-        $configuration->expects($this->once())
-                      ->method('getText')
-                      ->will($this->returnValue(substr(md5(rand()), 0, 21)));
-
-        $errors = $validator->validate($configuration);
-
-        $this->assertArrayHasKey('text', $errors);
-    }
-
-    /**
      * Tests that a valid font reference doesn't produce a validation error.
      */
     public function testValidFont()

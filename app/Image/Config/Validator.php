@@ -16,11 +16,6 @@ class Validator
     const MAX_LENGTH = 1920;
 
     /**
-     * @var int maxiumum number of characters
-     */
-    const MAX_TEXT_LENGTH = 20;
-
-    /**
      * @var string[] valid file formats
      */
     const VALID_FORMATS = ['png', 'gif'];
@@ -42,9 +37,6 @@ class Validator
             $this->validateColours(
                 $config->getBackgroundColour(),
                 $config->getForegroundColour()
-            ),
-            $this->validateText(
-                $config->getText()
             ),
             $this->validateFormat(
                 $config->getFormat()
@@ -116,28 +108,6 @@ class Validator
 
         if (is_null($foregroundColour)) {
             $errors['foregroundColour'] = 'Foreground colour must be valid.';
-        }
-
-        return $errors;
-    }
-
-    /**
-     * Validate the text of the configuration.
-     *
-     * @param string $backgroundColour
-     * @param string $foregroundColour
-     *
-     * @return array any validation errors
-     */
-    protected function validateText($text)
-    {
-        $errors = [];
-
-        if (strlen($text) > self::MAX_TEXT_LENGTH) {
-            $errors['text'] = sprintf(
-                'Length of text cannot be greater than %d',
-                self::MAX_TEXT_LENGTH
-            );
         }
 
         return $errors;
