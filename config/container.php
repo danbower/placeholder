@@ -9,9 +9,11 @@ use App\Image\Config\Validator;
 use App\Controller\ControllerResolver;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\HttpKernel\HttpCache\Store;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\HttpKernel\HttpCache\HttpCache;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
 use Symfony\Component\HttpKernel\EventListener\ExceptionListener;
@@ -54,6 +56,12 @@ $container->register('http_kernel', HttpKernel::class)
               new Reference('controller_resolver'),
               new Reference('request_stack'),
               new Reference('argument_resolver')
+            ]);
+
+$container->register('http_cache', HttpCache::class)
+          ->setArguments([
+              new Reference('http_kernel'),
+              new Store(__DIR__ . '/../cache')
             ]);
 
 return $container;

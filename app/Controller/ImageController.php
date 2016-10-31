@@ -24,7 +24,9 @@ class ImageController extends Controller
     {
         $director = new BuildDirector(new StandardBuilder($length, $length, $request));
 
-        return $this->renderOrError($director->getResult());
+        $response = $this->renderOrError($director->getResult());
+
+        return $this->setCacheHeaders($response);
     }
 
     /**
@@ -40,7 +42,9 @@ class ImageController extends Controller
     {
         $director = new BuildDirector(new StandardBuilder($width, $height, $request));
 
-        return $this->renderOrError($director->getResult());
+        $response = $this->renderOrError($director->getResult());
+
+        return $this->setCacheHeaders($response);
     }
 
     /**
@@ -77,5 +81,25 @@ class ImageController extends Controller
         return new Response($image->getData(), 200, [
             'Content-Type' => $image->getMimeType(),
         ]);
+    }
+
+    /**
+     * Set cache headers on the Response.
+     *
+     * @param Response $response
+     *
+     * @return Response
+     */
+    protected function setCacheHeaders(Response $response)
+    {
+        $ttl = 60 * 60 * 24 * 30;
+
+        $response->setCache([
+            'public' => true,
+            'max_age' => $ttl,
+            's_maxage' => $ttl,
+        ]);
+
+        return $response;
     }
 }

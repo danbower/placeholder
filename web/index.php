@@ -6,10 +6,11 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $container = require __DIR__ . '/../config/container.php';
 
-$kernel = $container->get('http_kernel');
+$httpCache = $container->get('http_cache');
 
 $request = Request::createFromGlobals();
-$response = $kernel->handle($request);
+$response = $httpCache->handle($request);
+
 $response->send();
 
-$kernel->terminate($request, $response);
+$httpCache->terminate($request, $response);
