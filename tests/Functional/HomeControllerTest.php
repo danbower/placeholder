@@ -12,6 +12,6 @@ class HomeControllerTest extends WebTestCase
         $response = self::$client->request('GET', self::$baseUrl);
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals('home', $response->getBody());
+        $this->assertContains('<body>', (string) $response->getBody());
     }
 }
