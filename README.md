@@ -1,6 +1,13 @@
 # Image placeholder
 
-Provides URLs for generating generic placeholder images.
+Provides URLs for generating generic placeholder images. You can find a live version [here](https://danbower.io/placeholder/).
+
+## Examples
+
+[![alt text](https://danbower.io/placeholder/100)](https://danbower.io/placeholder/100)
+[![alt text](https://danbower.io/placeholder/75/100?text=foo+bar)](https://danbower.io/placeholder/75/100?text=foo+bar)
+[![alt text](https://danbower.io/placeholder/175/100?text=foo+bar)](https://danbower.io/placeholder/175/100?text=foo+bar)
+[![alt text](https://danbower.io/placeholder/75/100?bg=808080&fg=000)](https://danbower.io/placeholder/75/100?bg=808080&fg=000)
 
 ## Installation
 
