@@ -130,6 +130,10 @@ class Colour
         }
 
         for ($i = 0; $i < 3; $i++) {
+            if (!is_int($rgb[$i])) {
+                return false;
+            }
+
             if ($rgb[$i] < 0 || $rgb[$i] > 255) {
                 return false;
             }

@@ -112,6 +112,16 @@ class ColourTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests that a RGB array containing non-integers is deemed invalid.
+     */
+    public function testInvalidRgbCharacters()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        new Colour(['aaa', 'aaa', 'aaa']);
+    }
+
+    /**
      * Tests that a RGB array containing the invalid number of
      * segements is deemed invalid.
      */
